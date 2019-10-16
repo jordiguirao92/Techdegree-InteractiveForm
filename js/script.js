@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+//$( document ).ready(function() {
 console.log( "ready!" );
 
 //First field (name) is focused.
@@ -49,7 +49,7 @@ const showColor = colorGroup => {
 //ACTIVITY SECTION
 //Creating a new field to display the total price of activities selected. 
 let totalCost = 0; 
-let totalCostMessage = $('<div id="total">Total price: 0$ </div>');
+let totalCostMessage = $('<div id="total">Total price: $0 </div>');
 $('.activities').append(totalCostMessage); //Selected by class. 
 const coursesInput = $('.activities input');
 
@@ -85,12 +85,16 @@ coursesInput.on('click', function() {
              }
        });
     } 
-   totalCostMessage.text(`Total Price: ${totalCost}$`);
+   totalCostMessage.text(`Total Price: $${totalCost}`);
 });
 
 
 //PAYMENT INFO
 $('#payment [value="select method"]').hide();  
+//Credit card payment selected by default. 
+$('#payment [value="Credit Card"]').prop('selected', true);  
+$('#paypal').hide();
+$('#bitcoin').hide();
 const $payment = $('#payment');
 
 //Update the payment information and message acording to the payment option selected. 
@@ -246,16 +250,23 @@ $(":button" ).click ((e) =>{
     e.preventDefault();
     console.log("Button Clicked" );
     if (nameValidate() && emailValidate() && activitiesValidate()){
-        console.log("Name ,email and activity valideted");
+        console.log("Name ,email and activity validated");
         if($('#payment option').filter(':selected').val() === "Credit Card" && creditcardValidate() && zipValidate() && cvvValidate()) {
             console.log("Submited Credit Card");
             $("form").submit(); 
-          } else {
+          } else if ($('#payment option').filter(':selected').val() !== "Credit Card"){
             console.log("Submited other payment");
             $("form").submit();  
         }
+    } else {
+        nameValidate();
+        emailValidate();
+        activitiesValidate();
+        creditcardValidate();
+        zipValidate();
+        cvvValidate()
     }
 
  }); 
         
-});
+//});
